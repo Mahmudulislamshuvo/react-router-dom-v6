@@ -1,53 +1,48 @@
-# React Router DOM Tutorial (Bangla Guide)
+# রিয়্যাক্ট রাউটার টিউটোরিয়াল (React Router Tutorial)
 
-এই টিউটোরিয়ালটি React Router DOM ব্যবহার করে একটি কন্টাক্ট ম্যানেজমেন্ট অ্যাপ তৈরির সম্পূর্ণ গাইড। এখানে অফিশিয়াল টিউটোরিয়ালের প্রতিটি ধাপ এবং ধারণা বিস্তারিতভাবে বাংলায় ব্যাখ্যা করা হয়েছে।
-
-## সূচিপত্র
-
-1. [সেটআপ (Setup)](#1-সেটআপ-setup)
-2. [রাউটার যোগ করা (Adding a Router)](#2-রাউটার-যোগ-করা-adding-a-router)
-3. [রুট রুট এবং লেআউট (The Root Route)](#3-রুট-রুট-এবং-লেআউট-the-root-route)
-4. [এরর হ্যান্ডলিং (Handling Not Found Errors)](#4-এরর-হ্যান্ডলিং-handling-not-found-errors)
-5. [কন্টাক্ট রুট ইউআই (The Contact Route UI)](#5-কন্টাক্ট-রুট-ইউআই-the-contact-route-ui)
-6. [নেস্টেড রুট (Nested Routes)](#6-নেস্টেড-রুট-nested-routes)
-7. [ক্লায়েন্ট সাইড রাউটিং (Client Side Routing)](#7-ক্লায়েন্ট-সাইড-রাউটিং-client-side-routing)
-8. [ডেটা লোডিং (Loading Data)](#8-ডেটা-লোডিং-loading-data)
-9. [ডেটা তৈরি এবং ফর্ম (Data Writes + HTML Forms)](#9-ডেটা-তৈরি-এবং-ফর্ম-data-writes--html-forms)
-10. [ইউআরএল প্যারামস (URL Params in Loaders)](#10-ইউআরএল-প্যারামস-url-params-in-loaders)
-11. [ডেটা আপডেট করা (Updating Data)](#11-ডেটা-আপডেট-করা-updating-data)
-12. [অ্যাক্টিভ লিঙ্ক স্টাইলিং (Active Link Styling)](#12-অ্যাক্টিভ-লিঙ্ক-স্টাইলিং-active-link-styling)
-13. [গ্লোবাল পেন্ডিং ইউআই (Global Pending UI)](#13-গ্লোবাল-পেন্ডিং-ইউআই-global-pending-ui)
-14. [রেকর্ড ডিলিট করা (Deleting Records)](#14-রেকর্ড-ডিলিট-করা-deleting-records)
-15. [ইনডেক্স রুট (Index Routes)](#15-ইনডেক্স-রুট-index-routes)
-16. [ক্যানসেল বাটন (Cancel Button)](#16-ক্যানসেল-বাটন-cancel-button)
-17. [সার্চ এবং ইউআরএল প্যারামস (URL Search Params)](#17-সার্চ-এবং-ইউআরএল-প্যারামস-url-search-params)
-18. [নেভিগেশন ছাড়া মিউটেশন (Mutations Without Navigation)](#18-নেভিগেশন-ছাড়া-মিউটেশন-mutations-without-navigation)
-19. [পাথলেস রুট (Pathless Routes)](#19-পাথলেস-রুট-pathless-routes)
-20. [JSX রুটস (JSX Routes)](#20-jsx-রুটস-jsx-routes)
+**বিশেষ দ্রষ্টব্য:** এই প্রকল্পটি অফিশিয়াল রিয়্যাক্ট রাউটার টিউটোরিয়ালের উপর ভিত্তি করে তৈরি। মূল সোর্স এবং লাইভ উদাহরণের জন্য, অনুগ্রহ করে ভিজিট করুন: [React Router Tutorial](https://reactrouter.com/6.30.2/start/tutorial)।
 
 ---
 
-### 1. সেটআপ (Setup)
+স্বাগতম! আমরা একটি ছোট কিন্তু ফিচার-সমৃদ্ধ অ্যাপ তৈরি করব যা আপনার পরিচিতিদের (contacts) ট্র্যাক রাখতে সাহায্য করবে।
 
-আমরা এই প্রজেক্টের জন্য **Vite** ব্যবহার করব। প্রথমে টার্মিনালে নিচের কমান্ডগুলো দিয়ে প্রজেক্ট সেটআপ করে নিন:
+## সেটআপ (Setup)
+
+আমরা এই টিউটোরিয়ালের জন্য আমাদের বান্ডলার এবং ডেভ সার্ভার হিসেবে Vite ব্যবহার করব। আপনার npm কমান্ড লাইন টুলের জন্য Node.js ইন্সটল করা থাকতে হবে।
+
+আপনার টার্মিনাল ওপেন করুন এবং Vite এর মাধ্যমে একটি নতুন রিয়্যাক্ট অ্যাপ তৈরি করুন:
 
 ```bash
 npm create vite@latest name-of-your-project -- --template react
+# প্রম্পটগুলো অনুসরণ করুন
 cd <your new project directory>
-npm install react-router-dom localforage match-sorter sort-by
+npm install react-router-dom # এটি সবসময় প্রয়োজন!
+npm install localforage match-sorter sort-by # শুধুমাত্র এই টিউটোরিয়ালের জন্য
 npm run dev
 ```
 
-প্রয়োজনীয় ফাইলগুলো (`src/contacts.js`, `src/index.css`) `src` ফোল্ডারে যোগ করুন এবং অপ্রয়োজনীয় ফাইলগুলো ডিলিট করে দিন।
+টার্মিনালে প্রিন্ট হওয়া URL টিতে ভিজিট করলে আপনি অ্যাপটি দেখতে পাবেন:
 
----
+![Vite ডিফল্ট পেজ](./public/02.webp)
 
-### 2. রাউটার যোগ করা (Adding a Router)
+আমাদের `src/index.css` ফাইলে কিছু প্রি-রিটেন CSS যুক্ত করতে হবে যাতে আমরা রিয়্যাক্ট রাউটারে মনোযোগ দিতে পারি। এছাড়াও `src/contacts.js` ফাইলে কিছু ফেইক ডেটা মডিউল যোগ করতে হবে।
 
-প্রথমেই আমাদের একটি `Browser Router` তৈরি করতে হবে। `main.jsx` ফাইলে আমরা রাউটার কনফিগার করব। এটি ক্লায়েন্ট সাইড রাউটিং এনাল (enable) করবে।
+`src` ফোল্ডারে `contacts.js`, `main.jsx`, এবং `index.css` ছাড়া বাকি সব ফাইল মুছে ফেলুন।
+
+## রাউটার যুক্ত করা (Adding a Router)
+
+প্রথমেই আমাদের একটি ব্রাউজার রাউটার (Browser Router) তৈরি করতে হবে এবং আমাদের প্রথম রুট কনফিগার করতে হবে।
+
+`main.jsx` ফাইলটি ওপেন করুন এবং রিয়্যাক্ট রাউটার যুক্ত করুন:
 
 ```jsx
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -63,27 +58,25 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 ```
 
----
+## রুট রুট (The Root Route)
 
-### 3. রুট রুট এবং লেআউট (The Root Route)
+আসুন অ্যাপের গ্লোবাল লেআউট তৈরি করি। `src/routes` ফোল্ডার এবং `src/routes/root.jsx` ফাইল তৈরি করুন।
 
-অ্যাপের গ্লোবাল লেআউট (যেমন সাইডবার) তৈরি করার জন্য আমরা `Root` কম্পোনেন্ট বানাব।
+`root.jsx` ফাইলে সাইডবার এবং নেভিগেশন সহ লেআউটটি তৈরি করুন। এরপর `main.jsx` ফাইলে `<Root>` কে রুট রুটের এলিমেন্ট হিসেবে সেট করুন।
 
-- `src/routes/root.jsx` তৈরি করুন।
-- সাইডবার এবং মেইন কন্টেন্ট এরিয়া (`detail`) তৈরি করুন।
-- `main.jsx` এ `Root` কম্পোনেন্টকে রুট এলিমেন্ট হিসেবে সেট করুন।
+এখন অ্যাপটি দেখতে অনেকটা এরকম হবে:
 
----
+![রুট লেআউট](./public/03.webp)
 
-### 4. এরর হ্যান্ডলিং (Handling Not Found Errors)
+## নট ফাউন্ড এরর হ্যান্ডলিং (Handling Not Found Errors)
 
-React Router ডিফল্টভাবে একটি এরর পেজ দেখায়, কিন্তু আমরা কাস্টম এরর পেজ তৈরি করতে পারি।
+আমরা অ্যাপে কিছু লিঙ্ক যোগ করেছি, সেগুলোতে ক্লিক করলে কী হয় দেখা যাক। সাইডবারের যেকোনো একটি নামে ক্লিক করুন।
 
-![Default React Router error element](https://reactrouter.com/_static/error-default.png)
+![ডিফল্ট এরর পেজ](./public/04.webp)
 
-- `src/error-page.jsx` তৈরি করুন।
-- `useRouteError` হুক ব্যবহার করে এরর ডিটেইলস দেখুন।
-- `main.jsx` এ `errorElement` হিসেবে এটি যুক্ত করুন। এর ফলে অ্যাপের যেকোনো রেন্ডারিং বা ডেটা লোডিং এররের সময় এই পেজটি দেখাবে।
+এটি রিয়্যাক্ট রাউটার এর ডিফল্ট এরর স্ক্রিন। আসুন আমরা আমাদের নিজস্ব এরর পেজ তৈরি করি।
+
+`src/error-page.jsx` নামে একটি ফাইল তৈরি করুন এবং সেখানে এরর কম্পোনেন্টটি লিখুন। এরপর `main.jsx` এ `errorElement` হিসেবে এটি যুক্ত করুন।
 
 ```jsx
 const router = createBrowserRouter([
@@ -95,15 +88,15 @@ const router = createBrowserRouter([
 ]);
 ```
 
-নিচে কাস্টম এরর পেজের উদাহরণ:
+এখন এরর পেজটি দেখতে এমন হবে:
 
-![Custom error page](https://reactrouter.com/_static/error-custom.png)
+![কাস্টম এরর পেজ](./public/05.webp)
 
----
+## কন্টাক্ট রুট ইউআই (The Contact Route UI)
 
-### 5. কন্টাক্ট রুট ইউআই (The Contact Route UI)
+লিঙ্কগুলোতে ক্লিক করলে 404 পেজের বদলে আমরা আসলে কিছু দেখাতে চাই। তার জন্য আমাদের একটি নতুন রুট তৈরি করতে হবে।
 
-প্রতিটি কন্টাক্টের বিস্তারিত দেখার জন্য `Contact` কম্পোনেন্ট তৈরি করুন (`src/routes/contact.jsx`)। এরপর রাউটারে নতুন পাথ যোগ করুন:
+`src/routes/contact.jsx` ফাইল তৈরি করুন এবং সেখানে কন্টাক্ট কম্পোনেন্টের কোড লিখুন। এরপর `main.jsx` এ নতুন রুটটি ইমপোর্ট করুন।
 
 ```jsx
 {
@@ -112,22 +105,20 @@ const router = createBrowserRouter([
 },
 ```
 
-এখন কন্টাক্ট পেজটি দেখাবে, কিন্তু এটি প্যারেন্ট লেআউটের বাইরে থাকবে:
+এখন `/contacts/1` এ গেলে আমরা নতুন কম্পোনেন্টটি দেখতে পাব, কিন্তু এটি আমাদের রুট লেআউটের ভেতরে নেই:
 
-![Contact route rendering without the parent layout](https://reactrouter.com/_static/contact-no-layout.png)
+![প্যারেন্ট লেআউট ছাড়া কন্টাক্ট রুট](./public/06.webp)
 
----
+## নেস্টেড রুটস (Nested Routes)
 
-### 6. নেস্টেড রুট (Nested Routes)
+আমরা চাই কন্টাক্ট কম্পোনেন্টটি `<Root>` লেআউটের ভেতরে রেন্ডার হোক। এটি করার জন্য আমাদের কন্টাক্ট রুটটিকে রুট রুটের চাইল্ড (child) হিসেবে তৈরি করতে হবে।
 
-আমরা চাই `Contact` কম্পোনেন্টটি `Root` লেআউটের ভেতরে রেন্ডার হোক। এজন্য আমাদের একে `children` হিসেবে যোগ করতে হবে এবং `Root` কম্পোনেন্টে `<Outlet />` ব্যবহার করতে হবে।
-
-**main.jsx:**
 ```jsx
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "contacts/:contactId",
@@ -138,101 +129,77 @@ const router = createBrowserRouter([
 ]);
 ```
 
-**Root.jsx:**
-```jsx
-import { Outlet } from "react-router-dom";
-// ...
-<div id="detail">
-    <Outlet />
-</div>
-```
+এবং `root.jsx` ফাইলে যেখানে আমরা চাইল্ড রুট রেন্ডার করতে চাই সেখানে `<Outlet />` ব্যবহার করতে হবে।
 
----
+এখন এটি দেখতে এমন হবে:
 
-### 7. ক্লায়েন্ট সাইড রাউটিং (Client Side Routing)
+![নেস্টেড লেআউট](./public/07.webp)
 
-সাধারণ `<a>` ট্যাগ ব্যবহার করলে ব্রাউজার পুরো পেজ রিফ্রেশ করে। React Router এ পেজ রিফ্রেশ ছাড়া নেভিগেট করতে `<Link>` কম্পোনেন্ট ব্যবহার করতে হয়।
+## ডেটা লোডিং (Loading Data)
 
-```jsx
-import { Link } from "react-router-dom";
-// ...
-<Link to={`contacts/1`}>Your Name</Link>
-```
+ইউআরএল সেগমেন্ট, লেআউট এবং ডেটা প্রায়শই একে অপরের সাথে সম্পর্কিত থাকে। রিয়্যাক্ট রাউটারে ডেটা লোড করার জন্য `loader` এবং `useLoaderData` ব্যবহার করা হয়।
 
----
+`root.jsx` এ একটি লোডার ফাংশন এক্সপোর্ট করুন এবং রুটে সেটি কনফিগার করুন। তারপর `useLoaderData` হুক ব্যবহার করে ডেটা অ্যাক্সেস করুন।
 
-### 8. ডেটা লোডিং (Loading Data)
+এখনও আমাদের কোনো ডেটা নেই, তাই আপনি একটি খালি লিস্ট দেখতে পাবেন:
 
-React Router ডেটা লোড করার জন্য **Loaders** ব্যবহার করে।
+![খালি কন্টাক্ট লিস্ট](./public/08.webp)
 
-1.  **Loader তৈরি:** `src/routes/root.jsx` থেকে একটি `loader` ফাংশন এক্সপোর্ট করুন যা ডেটা ফেচ করবে।
-2.  **Loader কনফিগার:** `main.jsx` এ রুটের সাথে `loader` প্রপ হিসেবে এটি যুক্ত করুন।
-3.  **ডেটা এক্সেস:** কম্পোনেন্টের ভেতরে `useLoaderData` হুক ব্যবহার করে ডেটা পান।
+## ডেটা রাইট এবং এইচটিএমএল ফর্ম (Data Writes + HTML Forms)
+
+রিয়্যাক্ট রাউটার এইচটিএমএল ফর্ম নেভিগেশন অনুকরণ করে। যখন আমরা "New" বাটনে ক্লিক করি, অ্যাপটি এরর দিতে পারে কারণ Vite সার্ভার POST রিকোয়েস্ট হ্যান্ডল করার জন্য কনফিগার করা নেই।
+
+![POST রিকোয়েস্ট এরর](./public/09.webp)
+
+আমরা ক্লায়েন্ট সাইড রাউটিং ব্যবহার করে এটি সমাধান করব।
+
+## কন্টাক্ট তৈরি করা (Creating Contacts)
+
+আমরা `root.jsx` এ একটি `action` তৈরি করব এবং `<form>` কে রিয়্যাক্ট রাউটারের `<Form>` দিয়ে রিপ্লেস করব।
 
 ```jsx
-// root.jsx
-export async function loader() {
-  const contacts = await getContacts();
-  return { contacts };
+export async function action() {
+  const contact = await createContact();
+  return { contact };
 }
-
-// main.jsx
-{
-  path: "/",
-  element: <Root />,
-  loader: rootLoader,
-}
-
-// Component
-const { contacts } = useLoaderData();
 ```
 
-প্রথম দিকে কোনো ডেটা না থাকলে পেজটি এরকম ফাঁকা দেখাবে:
+রুটে অ্যাকশনটি কনফিগার করার পর, "New" বাটনে ক্লিক করলে আপনি লিস্টে একটি নতুন রেকর্ড দেখতে পাবেন:
 
-![Blank contact list](https://reactrouter.com/_static/blank-list.png)
+![নতুন রেকর্ড তৈরি](./public/10.webp)
 
----
+## লোডারে ইউআরএল প্যারামস (URL Params in Loaders)
 
-### 9. ডেটা তৈরি এবং ফর্ম (Data Writes + HTML Forms)
+এখন লিস্টের "No Name" রেকর্ডে ক্লিক করুন। আমরা আবার সেই স্ট্যাটিক কন্টাক্ট পেজ দেখতে পাব।
 
-ডেটা তৈরি বা আপডেট করার জন্য React Router **Actions** এবং `<Form>` কম্পোনেন্ট ব্যবহার করে।
+URL এর `:contactId` অংশটি হলো "URL Params"। এটি লোডারে `params` হিসেবে পাস করা হয়।
 
-- সাধারণ HTML ফর্মের মতই, কিন্তু এটি সার্ভারে রিকোয়েস্ট না পাঠিয়ে ক্লায়েন্ট সাইড রাউটারের `action` এ ডেটা পাঠায়।
-- `createContact` ফাংশন কল করার জন্য একটি `action` তৈরি করুন।
-- `<Form method="post">` ব্যবহার করুন।
-- ফর্ম সাবমিট হলে React Router অটোমেটিক্যালি সব `loader` রিভ্যালিডেট (revalidate) করে, ফলে ইউআই (UI) আপডেট হয়ে যায়।
-
-নতুন কন্টাক্ট তৈরির পর এডিট পেজে রিডাইরেক্ট হবে:
-
-![Redirect to edit page](https://reactrouter.com/_static/redirect-to-edit.png)
-
----
-
-### 10. ইউআরএল প্যারামস (URL Params in Loaders)
-
-ডায়নামিক ইউআরএল সেগমেন্ট (যেমন `:contactId`) এর মান লোডারে `params` অবজেক্টের মাধ্যমে পাওয়া যায়।
+`contact.jsx` এ একটি লোডার যোগ করুন যা আইডি দিয়ে কন্টাক্ট ফেচ করবে।
 
 ```jsx
-// contact.jsx
 export async function loader({ params }) {
   const contact = await getContact(params.contactId);
   return { contact };
 }
 ```
 
-এটি ব্যবহার করে আমরা নির্দিষ্ট আইডির কন্টাক্ট ফেচ করতে পারি।
+এখন সঠিক ডেটা লোড হবে:
 
----
+![সঠিক কন্টাক্ট ডেটা](./public/11.webp)
 
-### 11. ডেটা আপডেট করা (Updating Data)
+## ডেটা আপডেট করা (Updating Data)
 
-ডেটা এডিট করার জন্য আমরা `EditContact` রুট তৈরি করি।
+ডেটা আপডেট করার জন্য আমরা `edit.jsx` নামে একটি নতুন রুট তৈরি করব।
 
-![Edit contact page UI](https://reactrouter.com/_static/edit-page.png)
+`src/routes/edit.jsx` ফাইলে এডিট ফর্ম তৈরি করুন এবং `main.jsx` এ নতুন রুটটি যোগ করুন।
 
-- `defaultValue` ব্যবহার করে ইনপুটে আগের ডেটা দেখানো হয়।
-- `action` ফাংশনে `request.formData()` ব্যবহার করে ফর্মের ডেটা নেওয়া হয় এবং `Object.fromEntries(formData)` দিয়ে অবজেক্টে রূপান্তর করা হয়।
-- আপডেট শেষে `redirect` ব্যবহার করে ইউজারকে অন্য পেজে পাঠানো হয়।
+"Edit" বাটনে ক্লিক করলে আমরা এই নতুন ইউআই (UI) দেখতে পাব:
+
+![এডিট ফর্ম](./public/12.webp)
+
+## ফর্ম ডেটা দিয়ে কন্টাক্ট আপডেট (Updating Contacts with FormData)
+
+এখন `edit.jsx` এ একটি অ্যাকশন যোগ করুন যা ফর্ম সাবমিট হ্যান্ডল করবে।
 
 ```jsx
 export async function action({ request, params }) {
@@ -243,128 +210,135 @@ export async function action({ request, params }) {
 }
 ```
 
-আপডেট করার পর কন্টাক্ট পেজটি এমন দেখাবে:
+ফর্ম পূরণ করে সেভ করলে আপনি আপডেট হওয়া কন্টাক্ট দেখতে পাবেন:
 
-![Updated contact](https://reactrouter.com/_static/updated-contact.png)
+![আপডেট হওয়া কন্টাক্ট](./public/13.webp)
 
----
+## রিডাইরেকশন (Redirecting new records)
 
-### 12. অ্যাক্টিভ লিঙ্ক স্টাইলিং (Active Link Styling)
+এখন আমরা চাই নতুন কন্টাক্ট তৈরি হওয়ার পর সরাসরি এডিট পেজে চলে যেতে। `root.jsx` এর `createContact` অ্যাকশনে `redirect` ব্যবহার করুন।
 
-সাইডবারে ইউজার বর্তমানে কোন পেজে আছে তা বোঝাতে `<NavLink>` ব্যবহার করা হয়। এটি একটি `isActive` এবং `isPending` প্রপ দেয় যা দিয়ে আমরা CSS ক্লাস পরিবর্তন করতে পারি।
+এখন "New" ক্লিক করলে আমরা এডিট পেজে চলে আসব:
 
-```jsx
-<NavLink
-  to={`contacts/${contact.id}`}
-  className={({ isActive, isPending }) =>
-    isActive ? "active" : isPending ? "pending" : ""
-  }
->
-  {/* content */}
-</NavLink>
-```
+![এডিট পেজে রিডাইরেক্ট](./public/14.webp)
 
----
+এখন কিছু নতুন রেকর্ড যোগ করুন:
 
-### 13. গ্লোবাল পেন্ডিং ইউআই (Global Pending UI)
+![অনেকগুলো কন্টাক্ট](./public/15.webp)
 
-যখন ডেটা লোড হতে সময় নেয়, তখন ইউজারকে ফিডব্যাক দিতে `useNavigation` হুক ব্যবহার করা হয়।
-`navigation.state` চেক করে ("loading", "submitting", বা "idle") আমরা লোডিং স্পিনার বা ফেড এফেক্ট দেখাতে পারি।
+## অ্যাক্টিভ লিঙ্ক স্টাইলিং (Active Link Styling)
 
----
+সাইডবারে আমরা কোন কন্টাক্টটি দেখছি তা বোঝার জন্য `<NavLink>` ব্যবহার করতে পারি। এটি আমাদের `isActive` এবং `isPending` স্টেট দেয়।
 
-### 14. রেকর্ড ডিলিট করা (Deleting Records)
+এটি ব্যবহার করার পর সাইডবারে সিলেক্ট করা কন্টাক্টটি হাইলাইট হবে:
 
-ডিলিট করার জন্য আমরা আলাদা রুট এবং অ্যাকশন ব্যবহার করি।
-- `<Form action="destroy">` ব্যবহার করলে এটি রিলেটিভ পাথ `contacts/:contactId/destroy` এ রিকোয়েস্ট পাঠায়।
-- `destroy.jsx` ফাইলে একটি `action` থাকে যা কন্টাক্ট ডিলিট করে এবং হোমপেজে রিডাইরেক্ট করে।
+![অ্যাক্টিভ লিঙ্ক](./public/16.webp)
 
----
+## গ্লোবাল পেন্ডিং ইউআই (Global Pending UI)
 
-### 15. ইনডেক্স রুট (Index Routes)
+ডেটা লোড হওয়ার সময় ইউজারকে ফিডব্যাক দেওয়ার জন্য আমরা `useNavigation` হুক ব্যবহার করতে পারি। যখন অ্যাপটি "loading" স্টেটে থাকবে, তখন আমরা `root.jsx` এর ডিটেইল অংশে একটি ক্লাস যোগ করতে পারি যা ট্রানজিশন ইফেক্ট দিবে।
 
-যখন আমরা প্যারেন্ট রুটে থাকি (যেমন `/`), তখন `<Outlet>` এ কিছু রেন্ডার হয় না। ডিফল্ট কিছু দেখানোর জন্য `index: true` দিয়ে একটি রুট সেট করা হয়।
+![লোডিং স্টেট](./public/17.webp)
 
-![Index route](https://reactrouter.com/_static/index-route.png)
+## রেকর্ড ডিলিট করা (Deleting Records)
 
-```jsx
-{ index: true, element: <Index /> }
-```
+কন্টাক্ট ডিলিট করার জন্য আমাদের একটি `destroy.jsx` রুট এবং অ্যাকশন তৈরি করতে হবে।
 
----
+`src/routes/destroy.jsx` তৈরি করুন এবং অ্যাকশন লিখুন যা `deleteContact` কল করবে। এরপর ফর্মে `action="destroy"` ব্যবহার করুন।
 
-### 16. ক্যানসেল বাটন (Cancel Button)
+এখন "Delete" বাটনে ক্লিক করলে রেকর্ডটি মুছে যাবে!
 
-এডিট পেজে ক্যানসেল বাটনে ক্লিক করলে আগের পেজে ফিরে যাওয়ার জন্য `useNavigate` হুক ব্যবহার করা হয়।
+![রেকর্ড ডিলিট](./public/18.webp)
 
-```jsx
-const navigate = useNavigate();
-<button onClick={() => navigate(-1)}>Cancel</button>
-```
+## প্রাসঙ্গিক এরর (Contextual Errors)
 
-`navigate(-1)` ব্রাউজার হিস্ট্রিতে এক ধাপ পেছনে নিয়ে যায়।
+যদি `destroy` অ্যাকশনে কোনো এরর হয়, তবে ডিফল্ট এরর পেজটি পুরো স্ক্রিন জুড়ে দেখা যাবে।
 
----
+![এরর স্ক্রিন](./public/19.webp)
 
-### 17. সার্চ এবং ইউআরএল প্যারামস (URL Search Params)
-
-সার্চ ফর্ম সাধারণত `GET` রিকোয়েস্ট হয়, তাই এটি `action` এর বদলে `loader` এ হিট করে।
-- `<Form role="search">` ব্যবহার করলে ইউআরএল এ কুয়েরি প্যারামিটার (যেমন `?q=name`) যোগ হয়।
-- লোডারে `request.url` থেকে এই প্যারামিটার নিয়ে ডেটা ফিল্টার করা হয়।
-- ইনপুট ফিল্ডের ভ্যালু সিঙ্ক রাখতে `useEffect` ব্যবহার করে `q` এর মান ইনপুটে সেট করা হয়।
-- প্রতি কি-স্ট্রোক এ সার্চ করার জন্য `useSubmit` হুক ব্যবহার করা হয়।
-- হিস্ট্রি স্ট্যাক যাতে ভরে না যায়, তাই `replace: true` অপশন ব্যবহার করা হয়।
-
-সার্চ করার সময় একটি স্পিনার দেখানোর জন্য:
-
-![Search spinner](https://reactrouter.com/_static/search-spinner.png)
-
----
-
-### 18. নেভিগেশন ছাড়া মিউটেশন (Mutations Without Navigation)
-
-সবসময় পেজ চেঞ্জ করার দরকার হয় না (যেমন "ফেভারিট" বাটন)। এর জন্য `useFetcher` ব্যবহার করা হয়।
-- `<fetcher.Form>` ব্যবহার করলে ইউআরএল পরিবর্তন না করেই অ্যাকশন কল করা যায় এবং ডেটা রিভ্যালিডেট হয়।
-- **Optimistic UI:** নেটওয়ার্ক রিকোয়েস্ট শেষ হওয়ার আগেই ইউআই আপডেট করে ইউজারকে দ্রুত রেসপন্স দেয়া হয়। `fetcher.formData` চেক করে আমরা বুঝতে পারি ইউজার কী ভ্যালু সাবমিট করেছে এবং তাৎক্ষণিকভাবে তা দেখাতে পারি।
-
-![Optimistic UI](https://reactrouter.com/_static/optimistic-ui.png)
-
----
-
-### 19. পাথলেস রুট (Pathless Routes)
-
-যদি আমরা চাই কোনো এরর হলে সেটি পুরো পেজ জুড়ে না দেখিয়ে শুধু আউটলেটের ভেতরে দেখাক, তাহলে আমরা চাইল্ড রুটগুলোকে একটি পাথহীন (pathless) রুটে র‍্যাপ (wrap) করতে পারি।
+আমরা চাই এররটি শুধু কনটেন্ট এরিয়াতে দেখাক, যাতে সাইডবার ঠিক থাকে। এর জন্য `destroy` রুটে একটি `errorElement` যোগ করুন।
 
 ```jsx
 {
-  element: <Root />,
-  children: [
-    {
-      errorElement: <ErrorPage />, // এই এরর এলিমেন্ট এখন চাইল্ড রুটগুলোর এরর ধরবে
-      children: [
-        /* সব চাইল্ড রুট এখানে */
-      ],
-    },
-  ],
+  path: "contacts/:contactId/destroy",
+  action: destroyAction,
+  errorElement: <div>Oops! There was an error.</div>,
 }
 ```
 
----
+এখন এররটি এভাবে দেখাবে:
 
-### 20. JSX রুটস (JSX Routes)
+![কনটেক্সচুয়াল এরর](./public/20.webp)
 
-React Router কনফিগার করার জন্য অবজেক্ট স্টাইলের বদলে JSX স্টাইলও ব্যবহার করা যায়। `createRoutesFromElements` এবং `<Route>` কম্পোনেন্ট ব্যবহার করে এটি করা হয়।
+## ইনডেক্স রুট (Index Routes)
+
+অ্যাপ লোড করলে ডানপাশে একটি ফাঁকা জায়গা দেখা যায়।
+
+![ফাঁকা পেজ](./public/21.webp)
+
+এটি পূরণ করার জন্য আমরা একটি ইনডেক্স রুট ব্যবহার করতে পারি। `src/routes/index.jsx` তৈরি করুন এবং রুটে `{ index: true, element: <Index /> }` কনফিগার করুন।
+
+এখন অ্যাপটি ওপেন করলে ডিফল্ট কন্টেন্ট দেখা যাবে:
+
+![ইনডেক্স পেজ](./public/22.webp)
+
+## সার্চ এবং GET সাবমিশন (URL Search Params and GET Submissions)
+
+সার্চ বক্সে টাইপ করে এন্টার দিলে URL এ `?q=` যোগ হয়। আমরা ক্লায়েন্ট সাইড ফিল্টারিং করার জন্য সার্চ ফর্মে `<Form>` ব্যবহার করব এবং `root.jsx` এর লোডারে ফিল্টারিং লজিক বসাবো।
+
+## ফর্ম স্টেটের সাথে URL সিঙ্ক করা
+
+পেজ রিফ্রেশ করলে সার্চ ইনপুটের ভ্যালু হারিয়ে যায়। এটি ঠিক করার জন্য লোডার থেকে `q` রিটার্ন করুন এবং ইনপুটের `defaultValue` হিসেবে সেট করুন।
+
+![সার্চ ইনপুট সিঙ্ক](./public/23.webp)
+
+ব্যাক বাটনে ক্লিক করলে ইনপুট আপডেট করার জন্য `useEffect` ব্যবহার করতে হবে।
+
+## টাইপ করার সাথে সাথে সাবমিট (Submitting Forms onChange)
+
+`useSubmit` হুক ব্যবহার করে আমরা প্রতিবার কি-স্ট্রোকের সাথে ফর্ম সাবমিট করতে পারি। কিন্তু এতে হিস্ট্রি স্ট্যাক অনেক বড় হয়ে যায়।
+
+![হিস্ট্রি স্ট্যাক](./public/24.webp)
+
+এটি এড়াতে `submit` ফাংশনে `{ replace: !isFirstSearch }` অপশনটি ব্যবহার করুন।
+
+## নেভিগেশন ছাড়া মিউটেশন (Mutations Without Navigation)
+
+ফেভারিট (★) বাটনটি কাজ করানোর জন্য আমরা `useFetcher` ব্যবহার করব। এটি ইউআরএল পরিবর্তন না করেই লোডার এবং অ্যাকশনের সাথে যোগাযোগ করতে পারে।
+
+`contact.jsx` এ ফেভারিট ফর্মটিকে `fetcher.Form` এ পরিবর্তন করুন এবং অ্যাকশন কনফিগার করুন।
+
+এখন স্টার বাটনে ক্লিক করলে পেজ রিফ্রেশ বা নেভিগেশন ছাড়াই ডেটা আপডেট হবে:
+
+![ফেভারিট বাটন](./public/25.webp)
+
+## অপটিমিস্টিক ইউআই (Optimistic UI)
+
+নেটওয়ার্ক স্লো থাকলে রেসপন্স আসতে দেরি হতে পারে। `fetcher.formData` ব্যবহার করে আমরা অ্যাকশন শেষ হওয়ার আগেই ইউআই আপডেট করে দিতে পারি। একে অপটিমিস্টিক ইউআই বলে।
+
+## নট ফাউন্ড ডেটা (Not Found Data)
+
+যদি এমন কোনো কন্টাক্ট লোড করার চেষ্টা করা হয় যা নেই, তবে আমরা একটি কাস্টম 404 এরর দেখাতে পারি। লোডারে `throw new Response` ব্যবহার করে এটি করা যায়।
+
+![404 এরর](./public/26.webp)
+
+## পাথলেস রুট (Pathless Routes)
+
+আমরা চাই সব চাইল্ড রুটের এররগুলো রুট আউটলেটের ভেতরে রেন্ডার হোক। এর জন্য আমরা চাইল্ড রুটগুলোকে একটি পাথলেস রুটে (pathless route) র‍্যাপ করতে পারি।
 
 ```jsx
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Root />}>
-      <Route path="contacts/:contactId" element={<Contact />} />
-    </Route>
-  )
-);
+children: [
+  {
+    errorElement: <ErrorPage />,
+    children: [ /* other routes */ ],
+  },
+],
 ```
+
+এখন যেকোনো চাইল্ড রুটের এরর এভাবে দেখাবে:
+
+![পাথলেস রুট এরর](./public/27.webp)
 
 ---
 
-**অভিনন্দন!** আপনি এখন React Router DOM এর মূল ধারণাগুলো জানেন এবং একটি ফাংশনাল কন্টাক্ট অ্যাপ তৈরি করতে সক্ষম। আরো বিস্তারিত জানার জন্য [অফিশিয়াল ডকুমেন্টেশন](https://reactrouter.com) দেখুন।
+অভিনন্দন! আপনি সফলভাবে রিয়্যাক্ট রাউটার টিউটোরিয়ালটি সম্পন্ন করেছেন।
